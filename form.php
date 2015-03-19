@@ -73,12 +73,12 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 								$("#unused_items").show();
 								$("#used_items").show();
 									var totalnumofitems = response.unused.length + response.used.length;
-									$('#unused_items').fadeIn(1000).append( "<strong>Unused:</strong>"+ response.unused.length + "items" + (response.unused.length*100/totalnumofitems)+ "%<br>");
+									$('#unused_items').fadeIn(1000).append( "<strong>Unused :</strong>"+ response.unused.length + " items(" + Math.round( (response.unused.length*100/totalnumofitems), 2)+ "%)<br>");
 									$.each(response.unused, function(index, value) {
 											$('#unused_items').fadeIn(1000).append( value + ", ");
 										});
 									
-									$('#used_items').fadeIn(1000).append( "<strong>Used:</strong>"+ response.used.length + "items" + (response.used.length*100/totalnumofitems)+ "%<br>");
+									$('#used_items').fadeIn(1000).append( "<strong>Used :</strong>"+ response.used.length + " items(" + Math.round((response.used.length*100/totalnumofitems), 2)+ "%)<br>");
 									$.each(response.used, function(index, value) {
 											$('#used_items').fadeIn(1000).append( value + ", ");
 										});
@@ -87,16 +87,13 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 							});
 		    	    event.preventDefault(); //Prevent the default submit
 		    	});
-
-		    
-		    
-		    
-		    
-		    
-		    
-		    
 	});//matches dom
 		</script>
+		<noscript>
+			<div style="border: 1px solid purple; padding: 10px">
+				<span style="color:red">You must enable JavaScript for this page to work !</span>
+			</div>
+		</noscript>
 		<style>
 			.loading_image, .loaded_files, .throw_error, #unused_items, #used_items  {
 				display: none;
