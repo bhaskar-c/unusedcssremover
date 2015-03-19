@@ -1,5 +1,7 @@
 <?php $prefill = 'http://knowpapa.com/
 http://knowpapa.com/num2words/';
+/*http://knowpapa.com/sitemap/
+http://knowpapa.com/tarot-divinations-android-app/';*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +27,7 @@ http://knowpapa.com/num2words/';
 	    		
 		    		};
 		    		
-		    		
+		    		$(".loading_image").prepend("Fetching URL contents. Please wait ! ");		
 					$(".loading_image").show();
 		    		$.ajax({ //Process the form using $.ajax()
 		    			type 		: 'POST', //Method type
@@ -55,19 +57,32 @@ http://knowpapa.com/num2words/';
 		    
 		    //form2
 	    	$("form[name='step_two']").submit(function(event) { 
-		    		
-					$(".loading_image").show();
+		    		$(".loading_image").show();
+		    		$(".loading_image").prepend("Analyzing CSS. Please wait ! ");	
+					
 					$.ajax({ 
 		    			type 		: 'POST', 
 						url 		: 'step_two.php', 
 		    			success 	: function(response) {
+							$(".loaded_files").hide();	
 							$(".loading_image").hide();
-							//response =  JSON.parse(response);
-							console.log(response);
+							response =  JSON.parse(response);
+							
 							if (response.success) { 
-									console.log("success");
-									console.log(response.noerrors);	
-									} 
+								console.log(response);
+								$("#unused_items").show();
+								$("#used_items").show();
+									var totalnumofitems = response.unused.length + response.used.length;
+									$('#unused_items').fadeIn(1000).append( "<strong>Unused:</strong>"+ response.unused.length + "items" + (response.unused.length*100/totalnumofitems)+ "%<br>");
+									$.each(response.unused, function(index, value) {
+											$('#unused_items').fadeIn(1000).append( value + ", ");
+										});
+									
+									$('#used_items').fadeIn(1000).append( "<strong>Used:</strong>"+ response.used.length + "items" + (response.used.length*100/totalnumofitems)+ "%<br>");
+									$.each(response.used, function(index, value) {
+											$('#used_items').fadeIn(1000).append( value + ", ");
+										});
+									}
 								}
 							});
 		    	    event.preventDefault(); //Prevent the default submit
@@ -83,15 +98,15 @@ http://knowpapa.com/num2words/';
 	});//matches dom
 		</script>
 		<style>
-			.loading_image, .loaded_files, .throw_error {
+			.loading_image, .loaded_files, .throw_error, #unused_items, #used_items  {
 				display: none;
 				margin: 5px 2px;
 			}
-			.throw_error {
+			.throw_error, #unused_items {
 				color:red;
 				}
 
-			.loading_image {
+			.loading_image, #used_items {
 				color: green;
 				}
 		</style>
@@ -101,12 +116,12 @@ http://knowpapa.com/num2words/';
 					<label>URLs</label><br>
 					<textarea name="urls" id="urls" rows="5" cols="40"><?php echo $prefill; ?></textarea><br>
 					<label>URL of CSS File</label><br>
-					<input type="text" name="css_url"><br>
+					<input type="text" name="css_url" value="http://knowpapa.com/wp-content/themes/corsa/assets/css/main.css"><br>
 					<input type="submit" value="Send" /><br>
 					
 		</form>
 		<span class="throw_error"></span><br>
-		<div class="loading_image">Loading Files:  <img src="ajax-loader.gif" /></div>
+		<div class="loading_image"><img src="ajax-loader.gif" /></div>
 		<div class="loaded_files">
 			All Files Loaded<br>
 			Press Analyze Button to Analyze unused CSS<br>
@@ -114,6 +129,9 @@ http://knowpapa.com/num2words/';
 						<input type="submit" value="Analyze CSS" /><br>
 					</form>
 		</div>
+		<div id="unused_items"></div>
+		<div id="used_items"></div>
+			
 		
 
 		
