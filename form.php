@@ -81,9 +81,9 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 								var unused_item_counter=1;
 								$.each(response.unused, function(index, value) {
 									if( (unused_item_counter%num_of_columns)==0)
-										unused_items_table = unused_items_table + '<td>'+value+'</td></tr><tr>';
+										unused_items_table = unused_items_table + '<td><label><input name="unused" value="'+ index+'"type="checkbox"/>'+value+'</label></td></tr><tr>';
 									else
-										unused_items_table = unused_items_table + '<td>'+value+'</td>';
+										unused_items_table = unused_items_table + '<td><label><input name="unused" value="'+ index+'"type="checkbox"/>'+value+'</label></td>';
 										unused_item_counter++;
 										});
 								unused_items_table=unused_items_table+'</tr></table>';
@@ -108,6 +108,15 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 							});
 		    	    event.preventDefault(); //Prevent the default submit
 		    	});
+		    	
+				//form 3
+		    	$("form[name='make_final_css']").submit(function(event) { 
+					var checkedValues = $('input[name="unused"]:checked').map(function() {
+						return this.value;
+						}).get();
+					console.log(checkedValues);
+					event.preventDefault(); //Prevent the default submit
+					});
 	});//matches dom
 		</script>
 		<noscript>
@@ -142,16 +151,19 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 		<div class="loading_image"><img src="ajax-loader.gif" /></div>
 		<div class="loaded_files">
 			All Files Loaded<br>
-			Press Analyze Button to Analyze unused CSS<br>
+			Click Next to analyze unused CSS<br>
 					<form method="post" name="step_two">
-						<input type="submit" value="Analyze CSS" /><br>
+						<input type="submit" value="next" /><br>
 					</form>
 		</div>
-		<div id="unused_items"></div>
-		<div id="used_items"></div>
-			
-		
-
-		
+		<div id="unused_items">
+			The following unused items will be removed from the final css.<br>
+			Checkbox can be used to retain any unused selector.<br>
+			<form method="post" name="make_final_css">
+				<input type="submit" value="Make Final CSS" /><br>
+			</form>
+		</div>
+		<div id="used_items">
+		</div>
 	</body>
 </html>
