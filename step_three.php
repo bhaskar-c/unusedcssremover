@@ -5,10 +5,13 @@
 	require_once 'simple_html_dom.php';
     require_once 'css_parser.php';
 
-	$do_not_remove_items = sanitise_input($_POST['do_not_remove_items']);
 
-//$data = array( 'success' => true);
-echo json_encode($data);
+	$data = array();
+	$do_not_remove_items = $_POST['do_not_remove_items']; // not sanitised
+
+	$data['content'] = $do_not_remove_items; //for now sending back just what was received
+	$data['success']= true;
+	echo json_encode($data);
 
 ?>
 

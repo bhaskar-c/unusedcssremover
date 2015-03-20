@@ -97,14 +97,19 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 				//form  step 3
 		    	$("form[name='make_final_css']").submit(function(event) { 
 				var do_not_remove_items = $('input[name="unused"]:checked').map(function() {return this.value;}).get();
-				do_not_remove_items = $.serialize(do_not_remove_items);
+				//var data_to_send = $.serialize(do_not_remove_items);
+				//do_not_remove_items = $.serialize(do_not_remove_items);
 				$.ajax({ 
 					type 		: 'POST', 
-					data 		: do_not_remove_items,
+					data 		: {do_not_remove_items:do_not_remove_items},
 					url 		: 'step_three.php', 
 					success 	: function(response) {
-						response =  JSON.parse(response);
+						console.log("tokay");
+						//response =  JSON.parse(response);
 						console.log(response);
+						if (response.success) { 
+							console.log("wokay");
+							}
 						}
 					});	
 					event.preventDefault(); 
