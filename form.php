@@ -8,58 +8,47 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 	<head>
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 		<meta content="utf-8" http-equiv="encoding">
-		<title>Simple Ajax Form</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js "></script>
-
 		<script>
 			$(document).ready(function() {
-				
-		    	$("form[name='step_one']").submit(function(event) { //Trigger on form submit
-		    		$('.throw_error').empty(); //Clear the messages first
+				//form step 1
+		    	$("form[name='step_one']").submit(function(event) { 
+		    		$('.throw_error').empty(); 
 		    		$('.loaded_files').hide();
 		    		var $inputs = $("form[name='step_one']").find("input, textarea");
 					$inputs.prop("disabled", true);
-					
-					
-		    		var step_one = { //Fetch form data
+		    		var step_one = { 
 		    			'urls' 	: $('textarea[name=urls]').val(),
 		    			'css_url' : $('input[name=css_url]').val()
-	    		
 		    		};
-		    		
 		    		$(".loading_image").prepend("Fetching URL contents. Please wait ! ");		
 					$(".loading_image").show();
-		    		$.ajax({ //Process the form using $.ajax()
-		    			type 		: 'POST', //Method type
-						url 		: 'step_one.php', //Your form processing file url
+		    		$.ajax({ 
+		    			type 		: 'POST', 
+						url 		: 'step_one.php', 
 		    			data 		: step_one,
 		    			success 	: function(response) {
 							
 		    			$(".loading_image").hide();
 		    			response =  JSON.parse(response);
-		    			console.log(response);
 		    			if (response.success) { 
-							console.log("success");
 							$(".loaded_files").show();
-							
 		   				} else {
 							console.log("no success");
 							if (response.errors.urls) { 
 		    					$('.throw_error').fadeIn(1000).html(response.errors.urls); 
 		   					}
-							
 							}
 		    			}
 		    		});
-		    	    event.preventDefault(); //Prevent the default submit
+		    	    event.preventDefault(); 
 		    	});
 		    
 		    
-		    //form2
+		    //form step 2
 	    	$("form[name='step_two']").submit(function(event) { 
 		    		$(".loading_image").show();
 		    		$(".loading_image").prepend("Analyzing CSS. Please wait ! ");	
-					
 					$.ajax({ 
 		    			type 		: 'POST', 
 						url 		: 'step_two.php', 
@@ -67,15 +56,11 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 							$(".loaded_files").hide();	
 							$(".loading_image").hide();
 							response =  JSON.parse(response);
-							
 							if (response.success) { 
-								console.log(response);
 								$("#unused_items").show();
 								$("#used_items").show();
 								var num_of_columns=10;
-								
 								var totalnumofitems = response.unused.length + response.used.length;
-								
 								$('#unused_items').fadeIn(1000).append( "<strong>Unused :</strong>"+ response.unused.length + " items(" + Math.round( (response.unused.length*100/totalnumofitems), 2)+ "%)<br>");
 							    var unused_items_table='<table border=\'1\'><tr>';
 								var unused_item_counter=1;
@@ -106,16 +91,23 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 									}
 								}
 							});
-		    	    event.preventDefault(); //Prevent the default submit
+		    	    event.preventDefault(); 
 		    	});
 		    	
-				//form 3
+				//form  step 3
 		    	$("form[name='make_final_css']").submit(function(event) { 
-					var checkedValues = $('input[name="unused"]:checked').map(function() {
-						return this.value;
-						}).get();
-					console.log(checkedValues);
-					event.preventDefault(); //Prevent the default submit
+				var do_not_remove_items = $('input[name="unused"]:checked').map(function() {return this.value;}).get();
+				do_not_remove_items = $.serialize(do_not_remove_items);
+				$.ajax({ 
+					type 		: 'POST', 
+					data 		: do_not_remove_items,
+					url 		: 'step_three.php', 
+					success 	: function(response) {
+						response =  JSON.parse(response);
+						console.log(response);
+						}
+					});	
+					event.preventDefault(); 
 					});
 	});//matches dom
 		</script>
@@ -163,7 +155,6 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 				<input type="submit" value="Make Final CSS" /><br>
 			</form>
 		</div>
-		<div id="used_items">
-		</div>
+		<div id="used_items"></div>
 	</body>
 </html>
