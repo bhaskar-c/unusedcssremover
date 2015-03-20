@@ -72,16 +72,37 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 								console.log(response);
 								$("#unused_items").show();
 								$("#used_items").show();
-									var totalnumofitems = response.unused.length + response.used.length;
-									$('#unused_items').fadeIn(1000).append( "<strong>Unused :</strong>"+ response.unused.length + " items(" + Math.round( (response.unused.length*100/totalnumofitems), 2)+ "%)<br>");
-									$.each(response.unused, function(index, value) {
-											$('#unused_items').fadeIn(1000).append( value + ", ");
+								var num_of_columns=10;
+								
+								var totalnumofitems = response.unused.length + response.used.length;
+								
+								$('#unused_items').fadeIn(1000).append( "<strong>Unused :</strong>"+ response.unused.length + " items(" + Math.round( (response.unused.length*100/totalnumofitems), 2)+ "%)<br>");
+							    var unused_items_table='<table border=\'1\'><tr>';
+								var unused_item_counter=1;
+								$.each(response.unused, function(index, value) {
+									if( (unused_item_counter%num_of_columns)==0)
+										unused_items_table = unused_items_table + '<td>'+value+'</td></tr><tr>';
+									else
+										unused_items_table = unused_items_table + '<td>'+value+'</td>';
+										unused_item_counter++;
 										});
-									
-									$('#used_items').fadeIn(1000).append( "<strong>Used :</strong>"+ response.used.length + " items(" + Math.round((response.used.length*100/totalnumofitems), 2)+ "%)<br>");
-									$.each(response.used, function(index, value) {
-											$('#used_items').fadeIn(1000).append( value + ", ");
+								unused_items_table=unused_items_table+'</tr></table>';
+								$('#unused_items').append(unused_items_table);
+
+								//used items table
+								$('#used_items').fadeIn(1000).append( "<strong>Used :</strong>"+ response.used.length + " items(" + Math.round((response.used.length*100/totalnumofitems), 2)+ "%)<br>");
+								var used_items_table='<table border=\'1\'><tr>';
+								var used_item_counter=1;
+								$.each(response.used, function(index, value) {
+									if( (used_item_counter%num_of_columns)==0)
+										used_items_table = used_items_table + '<td>'+value+'</td></tr><tr>';
+									else
+										used_items_table = used_items_table + '<td>'+value+'</td>';
+										used_item_counter++;
 										});
+								used_items_table=used_items_table+'</tr></table>';
+								$('#used_items').append(used_items_table);
+
 									}
 								}
 							});
