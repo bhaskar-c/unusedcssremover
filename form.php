@@ -103,10 +103,13 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 					url 		: 'step_three.php', 
 					success 	: function(response) {
 						console.log("tokay");
-						//response =  JSON.parse(response);
-						console.log(response);
+						response =  JSON.parse(response);
+						//$("#unused_items").hide();
+						//$("#used_items").hide();
+						$("#final_css").show();
 						if (response.success) { 
-							console.log("wokay");
+							
+							$("#final_css").fadeIn(1000).append('<pre>'+  response.content  +'</pre>');
 							}
 						}
 					});	
@@ -120,7 +123,7 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 			</div>
 		</noscript>
 		<style>
-			.loading_image, .loaded_files, .throw_error, #unused_items, #used_items  {
+			.loading_image, .loaded_files, .throw_error, #unused_items, #used_items, #final_css  {
 				display: none;
 				margin: 5px 2px;
 			}
@@ -159,5 +162,6 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 			</form>
 		</div>
 		<div id="used_items"></div>
+		<div id="final_css"></div>
 	</body>
 </html>
