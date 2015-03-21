@@ -61,9 +61,9 @@
 	//$css_string = preg_replace("/{\s*,/", "{", $css_string); //remove instances like '{ ,'
 	$css_string = str_replace(' , ', ',', $css_string); //
 	$css_string = str_replace('}',"}<br>", $css_string);
+	$css_string = preg_replace('/\s+/', ' ', $css_string); // remove excess white spaces
 	
 	//houston we are ready;
-
 	$data['content'] = $css_string ; 
 	$data['success']= true;
 	echo json_encode($data);
