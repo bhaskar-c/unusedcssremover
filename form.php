@@ -97,8 +97,6 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 				//form  step 3
 		    	$("form[name='make_final_css']").submit(function(event) { 
 				var do_not_remove_items = $('input[name="unused"]:checked').map(function() {return this.value;}).get();
-				//var data_to_send = $.serialize(do_not_remove_items);
-				//do_not_remove_items = $.serialize(do_not_remove_items);
 				$.ajax({ 
 					type 		: 'POST', 
 					data 		: {do_not_remove_items:do_not_remove_items},
@@ -137,7 +135,7 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 	</head>
 	<body>
 		<form method="post" name="step_one">
-					<label>URLs</label><br>
+					<label>Enter up to 5 URLs(one per line). </label><br>
 					<textarea name="urls" id="urls" rows="5" cols="40"><?php echo $prefill; ?></textarea><br>
 					<label>URL of CSS File</label><br>
 					<input type="text" name="css_url" value="http://knowpapa.com/wp-content/themes/corsa/assets/css/main.css"><br>
@@ -155,9 +153,9 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 		</div>
 		<div id="unused_items">
 			The following unused items will be removed from the final css.<br>
-			Checkbox can be used to retain any unused selector.<br>
+			Select items you do not want removed and then press the "Generate CSS Button"<br>
 			<form method="post" name="make_final_css">
-				<input type="submit" value="Make Final CSS" /><br>
+				<input type="submit" value="Generate CSS" /><br>
 			</form>
 		</div>
 		<div id="used_items"></div>

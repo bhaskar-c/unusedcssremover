@@ -42,12 +42,11 @@
 		
 		$_SESSION["total_html_content"] = utf8_encode($total_html_content);
 		
-		$css =  parse($css_url);
-		$_SESSION["css"] = $css;
+		$parsed_css =  parse($css_url);
+		$_SESSION["css"] = $parsed_css;
 		
-
-		//file_put_contents("total.txt", $_SESSION["total_html_content"] );
-		//file_put_contents("css.txt", varDumpToString($_SESSION["css"] ) );
+		$css_string = file_get_contents($css_url);
+		$_SESSION["css_string"] = $css_string;
 }
 
 	if (empty($errors)) { 
@@ -63,13 +62,6 @@
 
 
 	/* Util Functions*/
-	
-	function varDumpToString ($var){
-          ob_start();
-          var_dump($var);
-          $result = ob_get_clean();
-          return $result;
-	}
 	
 	
 	function get_domain($url){
@@ -109,6 +101,4 @@
 	   return $data;
 	}
 
-	function clean($string) {
-	   return preg_replace('/[^A-Za-z0-9]/', '', $string); // Removes special chars.
-	}
+	
