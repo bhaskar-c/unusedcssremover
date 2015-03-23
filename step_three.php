@@ -10,7 +10,7 @@
     $firephp = FirePHP::getInstance(true);
 
 	$data = array();
-	$do_not_remove_items = $_POST['do_not_remove_items']; //not sanitised
+	$do_not_remove_items = array($_POST['do_not_remove_items']); //not sanitised
 
 	//$firephp->log($do_not_remove_items);
 	

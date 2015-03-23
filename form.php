@@ -9,9 +9,10 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 		<meta content="utf-8" http-equiv="encoding">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js "></script>
-		<script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>  		<script>
 			$(document).ready(function() {
-				
+
+			
 				//form step 1
 		    	$("form[name='step_one']").submit(function(event) { 
 		    		$('.throw_error').empty(); 
@@ -48,6 +49,7 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 		    
 		    //form step 2
 	    	$("form[name='step_two']").submit(function(event) { 
+		    		
 		    		$(".loading_image").show();
 		    		$(".loading_image").prepend("Analyzing CSS. Please wait ! ");	
 					$.ajax({ 
@@ -58,37 +60,41 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 							$(".loading_image").hide();
 							response =  JSON.parse(response);
 							if (response.success) { 
-								$("#unused_items").show();
-								$("#used_items").show();
+								$("#retain_unused_msg_form").hide();
+							
 								var num_of_columns=10;
 								var totalnumofitems = response.unused.length + response.used.length;
-								$('#unused_items').fadeIn(1000).append( "<h3>Unused :"+ response.unused.length + " items(" + Math.round( (response.unused.length*100/totalnumofitems), 2)+ "%)</h3>");
-							    var unused_items_table='<table class="active" border="1"><tr>';
+								var unused_items = '<h3>Unused :'+ response.unused.length + ' items(' + Math.round( (response.unused.length*100/totalnumofitems), 2)+ '%)</h3><div>' ;
+							    var unused_items = unused_items+'<table><tr>';
 								var unused_item_counter=1;
 								$.each(response.unused, function(index, value) {
 									if( (unused_item_counter%num_of_columns)==0)
-										unused_items_table = unused_items_table + '<td><label><input name="unused" value="'+ index+'"type="checkbox"/>'+value+'</label></td></tr><tr>';
+										unused_items = unused_items + '<td><label><input name="unused" value="'+ index+'" type="checkbox"/>'+value+'</label></td></tr><tr>';
 									else
-										unused_items_table = unused_items_table + '<td><label><input name="unused" value="'+ index+'"type="checkbox"/>'+value+'</label></td>';
+										unused_items = unused_items + '<td><label><input name="unused" value="'+ index+'" type="checkbox"/>'+value+'</label></td>';
 										unused_item_counter++;
 										});
-								unused_items_table=unused_items_table+'</tr></table>';
-								$('#unused_items').append(unused_items_table);
-
+								unused_items=unused_items+'</tr></table></div>';
+								
 								//used items table
-								$('#used_items').fadeIn(1000).append( "<h3>Used :"+ response.used.length + " items(" + Math.round((response.used.length*100/totalnumofitems), 2)+ "%)</h3>");
-								var used_items_table='<table class="inactive" border="1"><tr>';
+								var used_items =
+								'<h3> Used :'+ response.used.length + ' items(' + Math.round((response.used.length*100/totalnumofitems), 2)+ '%)</h3><div>';
+								var used_items= used_items +'<table><tr>';
 								var used_item_counter=1;
 								$.each(response.used, function(index, value) {
 									if( (used_item_counter%num_of_columns)==0)
-										used_items_table = used_items_table + '<td>'+value+'</td></tr><tr>';
+										used_items = used_items + '<td>'+value+'</td></tr><tr>';
 									else
-										used_items_table = used_items_table + '<td>'+value+'</td>';
+										used_items = used_items + '<td>'+value+'</td>';
 										used_item_counter++;
 										});
-								used_items_table=used_items_table+'</tr></table>';
-								$('#used_items').append(used_items_table);
-
+								used_items=used_items+'</tr></table></div>';
+								var unused_and_used = unused_items + used_items;
+								console.log(unused_and_used);
+								//$('#accordion').append(unused_and_used).accordion({collapsible: true}); 
+								//$("#accordion").html(unused_and_used).accordion({ header: "h3"});
+								$("#accordion").append(unused_and_used);
+								$("#accordion").accordion(); 
 									}
 								}
 							});
@@ -97,6 +103,7 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 		    	
 				//form  step 3
 		    	$("form[name='make_final_css']").submit(function(event) { 
+					$("#retain_unused_msg_form").show();
 				var do_not_remove_items = $('input[name="unused"]:checked').map(function() {return this.value;}).get();
 				$.ajax({ 
 					type 		: 'POST', 
@@ -110,19 +117,18 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 						$("#final_css").show();
 						if (response.success) { 
 							
-							$("#final_css").fadeIn(1000).append('<h3>Modified CSS</h3><span class="accordion"><pre>'+  response.content  +'</pre></span>');
+							$("#final_css").fadeIn(1000).append('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
 							}
 						}
 					});	
 					event.preventDefault(); 
 					});
 					
-					$("#accordian").on('click', 'h3', function(){
-						console.log('click bubu');
-						$("#accordian table").slideUp();
-						if(!$(this).next().is(":visible")){
-							$(this).next().slideDown();}
-					});
+
+					
+
+					
+					
 
 	
 	
@@ -134,13 +140,14 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 			</div>
 		</noscript>
 		<style>
-			#accordian h3 {	padding: 15px; background: #003040;	background: linear-gradient(#003040, #002535); }
-			#accordian h3:hover {text-shadow: 0 0 1px rgba(255, 255, 255, 0.7);	}
-			#accordian table {display: block; padding: 0 15px; 	transition: all 0.15s;	}
-			#accordian table.inactive{	content:before display: none;	}
-			#accordian table.active { display: block;}
-			.loading_image, .loaded_files, .throw_error, #unused_items, #used_items, #final_css  {display: none; margin: 5px;}
+			table {table-layout:fixed; width:650px; border-collapse: collapse;}
+			 td { white-space: -o-pre-wrap; word-wrap: break-word;  white-space: pre-wrap; white-space: -moz-pre-wrap; 
+				white-space: -pre-wrap; height: auto;    vertical-align: bottom;}
+			.loading_image, .loaded_files, .throw_error, #retain_unused_msg_form {display: none; margin: 5px; width:650px;}
+			table, th, td {   border: 1px solid green;} 
+			tr:nth-child(odd){ background-color:#d4ffaa}
 			.throw_error {color:red;}
+			
 		</style>
 	</head>
 	<body>
@@ -161,16 +168,19 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 						<input type="submit" value="Find Unused Items" /><br>
 					</form>
 		</div>
-		<div id="accordian">
-			<div class="accordion" id="unused_items">
+		
+			<div id="retain_unused_msg_form">
 				The following unused items will be removed from the final css.<br>
 				Select items you do not want removed and then press the "Generate CSS" Button: 
 				<form method="post" name="make_final_css">
 					<input type="submit" value="Generate CSS" /><br>
 				</form>
 			</div>
-			<div class="accordion" id="used_items"></div>
-			<div id="final_css"></div>
-		</div>
+			<div id="accordian">
+			
+					
+		   </div>
+		   <div id="final_css"></div>
+		   
 	</body>
 </html>
