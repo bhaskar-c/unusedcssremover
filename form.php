@@ -8,8 +8,11 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 	<head>
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 		<meta content="utf-8" http-equiv="encoding">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js "></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>  		<script>
+		 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+		
+		<script>
 			$(document).ready(function() {
 
 			
@@ -49,7 +52,6 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 		    
 		    //form step 2
 	    	$("form[name='step_two']").submit(function(event) { 
-		    		
 		    		$(".loading_image").show();
 		    		$(".loading_image").prepend("Analyzing CSS. Please wait ! ");	
 					$.ajax({ 
@@ -60,8 +62,7 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 							$(".loading_image").hide();
 							response =  JSON.parse(response);
 							if (response.success) { 
-								$("#retain_unused_msg_form").hide();
-							
+								$("#retain_unused_msg_form").show();
 								var num_of_columns=10;
 								var totalnumofitems = response.unused.length + response.used.length;
 								var unused_items = '<h3>Unused :'+ response.unused.length + ' items(' + Math.round( (response.unused.length*100/totalnumofitems), 2)+ '%)</h3><div>' ;
@@ -90,11 +91,8 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 										});
 								used_items=used_items+'</tr></table></div>';
 								var unused_and_used = unused_items + used_items;
-								console.log(unused_and_used);
-								//$('#accordion').append(unused_and_used).accordion({collapsible: true}); 
-								//$("#accordion").html(unused_and_used).accordion({ header: "h3"});
-								$("#accordion").append(unused_and_used);
-								$("#accordion").accordion(); 
+								$("#accordion-1").append(unused_and_used);
+								$( "#accordion-1" ).accordion({heightStyle: "content", collapsible: true}); 
 									}
 								}
 							});
@@ -102,7 +100,7 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 		    	});
 		    	
 				//form  step 3
-		    	$("form[name='make_final_css']").submit(function(event) { 
+		    	$("form[name='make_final_css']").submit(function(event) {  
 					$("#retain_unused_msg_form").show();
 				var do_not_remove_items = $('input[name="unused"]:checked').map(function() {return this.value;}).get();
 				$.ajax({ 
@@ -110,28 +108,18 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 					data 		: {do_not_remove_items:do_not_remove_items},
 					url 		: 'step_three.php', 
 					success 	: function(response) {
-						console.log("tokay");
+						$("#retain_unused_msg_form").hide();
 						response =  JSON.parse(response);
-						//$("#unused_items").hide();
-						//$("#used_items").hide();
-						$("#final_css").show();
 						if (response.success) { 
-							
-							$("#final_css").fadeIn(1000).append('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
+							$("#accordion-1").prepend('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
+							$( "#accordion-1" ).accordion("refresh"); 
+									
 							}
 						}
 					});	
 					event.preventDefault(); 
 					});
-					
 
-					
-
-					
-					
-
-	
-	
 	});//matches dom
 		</script>
 		<noscript>
@@ -144,9 +132,9 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 			 td { white-space: -o-pre-wrap; word-wrap: break-word;  white-space: pre-wrap; white-space: -moz-pre-wrap; 
 				white-space: -pre-wrap; height: auto;    vertical-align: bottom;}
 			.loading_image, .loaded_files, .throw_error, #retain_unused_msg_form {display: none; margin: 5px; width:650px;}
-			table, th, td {   border: 1px solid green;} 
-			tr:nth-child(odd){ background-color:#d4ffaa}
-			.throw_error {color:red;}
+			table, th, td {   border: 1px solid #b5b5b5;} 
+			tr:nth-child(odd){ background-color:#f5f5f5;}
+			.throw_error {color:red;}1
 			
 		</style>
 	</head>
@@ -176,11 +164,10 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 					<input type="submit" value="Generate CSS" /><br>
 				</form>
 			</div>
-			<div id="accordian">
+			<div id="accordion-1">
 			
 					
 		   </div>
-		   <div id="final_css"></div>
 		   
 	</body>
 </html>
