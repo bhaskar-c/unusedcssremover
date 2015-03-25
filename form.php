@@ -62,11 +62,13 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 							$(".loading_image").hide();
 							response =  JSON.parse(response);
 							if (response.success) { 
-								$("#retain_unused_msg_form").show();
+								$(".retain_unused_msg_form").show();
 								var num_of_columns=10;
 								var totalnumofitems = response.unused.length + response.used.length;
 								var unused_items = '<h3>Unused :'+ response.unused.length + ' items(' + Math.round( (response.unused.length*100/totalnumofitems), 2)+ '%)</h3><div>' ;
-							    var unused_items = unused_items+'<table><tr>';
+								unused_items +=  'The following unused items will be removed from the final css.<br>Select items you do not want removed and then press the "Generate CSS" button';
+								
+							    unused_items = unused_items+'<table><tr>';
 								var unused_item_counter=1;
 								$.each(response.unused, function(index, value) {
 									if( (unused_item_counter%num_of_columns)==0)
@@ -101,15 +103,19 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 		    	
 				//form  step 3
 		    	$("form[name='make_final_css']").submit(function(event) {  
-					$("#retain_unused_msg_form").show();
+					$(".retain_unused_msg_form").show();
 				var do_not_remove_items = $('input[name="unused"]:checked').map(function() {return this.value;}).get();
+				console.log(do_not_remove_items);
 				$.ajax({ 
 					type 		: 'POST', 
 					data 		: {do_not_remove_items:do_not_remove_items},
 					url 		: 'step_three.php', 
 					success 	: function(response) {
-						$("#retain_unused_msg_form").hide();
-						response =  JSON.parse(response);
+						//$(".retain_unused_msg_form").hide();
+						console.log(response);
+						response =  JSON.parse(response); // do not remove this. this is needed atleast in this response
+						//console.log(type(response));
+						console.log(response);
 						if (response.success) { 
 							$("#accordion-1").prepend('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
 							$( "#accordion-1" ).accordion("refresh"); 
@@ -131,7 +137,7 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 			table {table-layout:fixed; width:650px; border-collapse: collapse;}
 			 td { white-space: -o-pre-wrap; word-wrap: break-word;  white-space: pre-wrap; white-space: -moz-pre-wrap; 
 				white-space: -pre-wrap; height: auto;    vertical-align: bottom;}
-			.loading_image, .loaded_files, .throw_error, #retain_unused_msg_form {display: none; margin: 5px; width:650px;}
+			.loading_image, .loaded_files, .throw_error, .retain_unused_msg_form {display: none; margin: 5px; width:650px;}
 			table, th, td {   border: 1px solid #b5b5b5;} 
 			tr:nth-child(odd){ background-color:#f5f5f5;}
 			.throw_error {color:red;}1
@@ -157,9 +163,7 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 					</form>
 		</div>
 		
-			<div id="retain_unused_msg_form">
-				The following unused items will be removed from the final css.<br>
-				Select items you do not want removed and then press the "Generate CSS" Button: 
+			<div class="retain_unused_msg_form"> 
 				<form method="post" name="make_final_css">
 					<input type="submit" value="Generate CSS" /><br>
 				</form>
