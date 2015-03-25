@@ -1,7 +1,7 @@
-<?php $prefill = 'http://home-cure.net/
+<?php $urls_placeholder = 'http://home-cure.net/
 http://home-cure.net/home-cure-whooping-cough/';
 
-$css = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/000000/M9BPLi0uyc_VLy6pzEnVMYBx0_LzShLLU4vzc1P1k4uLwXxdqAAA.css';
+$css_placeholder = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/000000/M9BPLi0uyc_VLy6pzEnVMYBx0_LzShLLU4vzc1P1k4uLwXxdqAAA.css';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,11 +62,11 @@ $css = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/000000/M9BPL
 							$(".loading_image").hide();
 							response =  JSON.parse(response);
 							if (response.success) { 
-								$(".retain_unused_msg_form").show();
+								$(".generate_css_form").show();
 								var num_of_columns=10;
 								var totalnumofitems = response.unused.length + response.used.length;
 								var unused_items = '<h3>Unused :'+ response.unused.length + ' items(' + Math.round( (response.unused.length*100/totalnumofitems), 2)+ '%)</h3><div>' ;
-								unused_items +=  'The following unused items will be removed from the final css.<br>Select items you do not want removed and then press the "Generate CSS" button';
+								unused_items +=  '<span style="color:tomato">These unused  css items will be removed.<br>Select items you do not want removed and then press the "Generate CSS" button</span>';
 								
 							    unused_items = unused_items+'<table><tr>';
 								var unused_item_counter=1;
@@ -103,19 +103,17 @@ $css = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/000000/M9BPL
 		    	
 				//form  step 3
 		    	$("form[name='make_final_css']").submit(function(event) {  
-					$(".retain_unused_msg_form").show();
+					$(".generate_css_form").show();
+					var $button = $("form[name='make_final_css']").find("input");
+					$button.prop("disabled", true);
 				var do_not_remove_items = $('input[name="unused"]:checked').map(function() {return this.value;}).get();
-				console.log(do_not_remove_items);
 				$.ajax({ 
 					type 		: 'POST', 
 					data 		: {do_not_remove_items:do_not_remove_items},
 					url 		: 'step_three.php', 
 					success 	: function(response) {
-						//$(".retain_unused_msg_form").hide();
-						console.log(response);
-						response =  JSON.parse(response); // do not remove this. this is needed atleast in this response
-						//console.log(type(response));
-						console.log(response);
+
+						response =  JSON.parse(response); 
 						if (response.success) { 
 							$("#accordion-1").prepend('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
 							$( "#accordion-1" ).accordion("refresh"); 
@@ -125,6 +123,17 @@ $css = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/000000/M9BPL
 					});	
 					event.preventDefault(); 
 					});
+					
+					//placeholder for textarea
+					var textarea_placeholder = $('#urls').val();
+					$('#urls').focus(function() {if ($(this).val() == textarea_placeholder)	$(this).val("");});
+					$('#urls').blur(function() {if ($(this).val() == "") $(this).val(textarea_placeholder);	});
+					//css text placeholder
+					var css_placeholder = $('#css_url').val();
+					$('#css_url').focus(function() {if ($(this).val() == css_placeholder)	$(this).val("");});
+					$('#css_url').blur(function() {if ($(this).val() == "") $(this).val(css_placeholder);	});
+					
+					
 
 	});//matches dom
 		</script>
@@ -137,7 +146,7 @@ $css = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/000000/M9BPL
 			table {table-layout:fixed; width:650px; border-collapse: collapse;}
 			 td { white-space: -o-pre-wrap; word-wrap: break-word;  white-space: pre-wrap; white-space: -moz-pre-wrap; 
 				white-space: -pre-wrap; height: auto;    vertical-align: bottom;}
-			.loading_image, .loaded_files, .throw_error, .retain_unused_msg_form {display: none; margin: 5px; width:650px;}
+			.loading_image, .loaded_files, .throw_error, .generate_css_form {display: none; margin: 5px; width:650px;}
 			table, th, td {   border: 1px solid #b5b5b5;} 
 			tr:nth-child(odd){ background-color:#f5f5f5;}
 			.throw_error {color:red;}1
@@ -147,23 +156,22 @@ $css = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/000000/M9BPL
 	<body>
 		<form method="post" name="step_one">
 					<label>Enter up to 5 URLs(one per line). </label><br>
-					<textarea name="urls" id="urls" rows="5" cols="40"><?php echo $prefill; ?></textarea><br>
+					<textarea name="urls" id="urls" rows="5" cols="40"><?php echo $urls_placeholder; ?></textarea><br>
 					<label>URL of CSS File</label><br>
-					<input type="text" name="css_url" value="<?php echo $css; ?>"><br>
+					<input type="text" name="css_url" id="css_url" value="<?php echo $css_placeholder; ?>"><br>
 					<input type="submit" value="Send" /><br>
 					
 		</form>
 		<span class="throw_error"></span><br>
 		<div class="loading_image"><img src="ajax-loader.gif" /></div>
 		<div class="loaded_files">
-			All Files Loaded<br>
-			Click Next to analyze unused CSS<br>
+			All set to go !<br> Click <i>Go</i> to analyze the CSS fie.
 					<form method="post" name="step_two">
-						<input type="submit" value="Find Unused Items" /><br>
+						<input type="submit" value="Analyse" /><br>
 					</form>
 		</div>
 		
-			<div class="retain_unused_msg_form"> 
+			<div class="generate_css_form"> 
 				<form method="post" name="make_final_css">
 					<input type="submit" value="Generate CSS" /><br>
 				</form>
