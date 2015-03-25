@@ -1,7 +1,7 @@
-<?php $prefill = 'http://knowpapa.com/';
-/*http://knowpapa.com/num2words/';
-http://knowpapa.com/sitemap/
-http://knowpapa.com/tarot-divinations-android-app/';*/
+<?php $prefill = 'http://home-cure.net/
+http://home-cure.net/home-cure-whooping-cough/';
+
+$css = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/000000/M9BPLi0uyc_VLy6pzEnVMYBx0_LzShLLU4vzc1P1k4uLwXxdqAAA.css';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -149,7 +149,7 @@ http://knowpapa.com/tarot-divinations-android-app/';*/
 					<label>Enter up to 5 URLs(one per line). </label><br>
 					<textarea name="urls" id="urls" rows="5" cols="40"><?php echo $prefill; ?></textarea><br>
 					<label>URL of CSS File</label><br>
-					<input type="text" name="css_url" value="http://knowpapa.com/wp-content/themes/corsa/assets/css/main.css"><br>
+					<input type="text" name="css_url" value="<?php echo $css; ?>"><br>
 					<input type="submit" value="Send" /><br>
 					
 		</form>
