@@ -4,11 +4,9 @@
 	header('Content-Type', 'application/json');
 	require_once 'simple_html_dom.php';
     require_once 'css_parser.php';
+	require_once('log.php');
+    set_time_limit(90);
     
-    //require_once('FirePHPCore/FirePHP.class.php');
-    //ob_start();
-    //$firephp = FirePHP::getInstance(true);
-
 	$data = array();
 	
 	$do_not_remove_items = array();
@@ -16,12 +14,6 @@
 		  $do_not_remove_items = $_POST['do_not_remove_items'];
 	}
 	
-	//$firephp->log($do_not_remove_items);
-	
-	//$_SESSION["total_html_content"] = utf8_encode($total_html_content);
-	//$_SESSION["css"] = $parsed_css;
-	
-	//$_SESSION["used"] = $used;
 	$unused = $_SESSION["unused"];
 	$css_string = $_SESSION["css_string"];
 	

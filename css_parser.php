@@ -1,7 +1,7 @@
 <?php
 
-function parse($file){
-    $css = file_get_contents($file);
+function parse($css){
+    
     $css = preg_replace('/@import[^;]*;/', '', $css); // ignore all imports
     $css = preg_replace('!/\*.*?\*/!s', '', $css); // remove all multiline comments
     preg_match_all( '/(?<selector>(?:(?:[^,{]+),?)*?)\{(?:(?<name>[^}:]+):?(?<value>[^};]+);?)*?\}/', $css, $arr);

@@ -3,7 +3,8 @@ session_start();
 
 require_once 'simple_html_dom.php';
 require_once 'css_parser.php';
-
+require_once('log.php');
+set_time_limit(90);
 $total_html_content = str_get_html($_SESSION["total_html_content"]);
 $parsed_css = $_SESSION["css"];
 

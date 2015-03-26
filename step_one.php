@@ -3,7 +3,8 @@
 	header('Content-Type', 'application/json');
 	require_once 'simple_html_dom.php';
     require_once 'css_parser.php';
-
+    require_once('log.php');
+	set_time_limit(90);
 	$MAX_NUM_OF_URLS_ALLOWED = 5;
 
 	$urls = sanitise_input($_POST['urls']);
@@ -41,11 +42,15 @@
 		}
 		
 		$_SESSION["total_html_content"] = utf8_encode($total_html_content);
+
 		
-		$parsed_css =  parse($css_url);
+
+		$css_string = file_get_contents($css_url);
+		$parsed_css =  parse($css_string);
 		$_SESSION["css"] = $parsed_css;
 		
-		$css_string = file_get_contents($css_url);
+		dlog($parsed_css);	
+		
 		$_SESSION["css_string"] = $css_string;
 }
 

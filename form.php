@@ -1,7 +1,8 @@
-<?php $urls_placeholder = 'http://home-cure.net/
-http://home-cure.net/home-cure-whooping-cough/';
+<?php $urls_placeholder = 'http://jampotgreens.com/
+http://jampotgreens.com/jamshedpur-schools-teach-entrepreneurship/
+http://jampotgreens.com/about/';
 
-$css_placeholder = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/000000/M9BPLi0uyc_VLy6pzEnVMYBx0_LzShLLU4vzc1P1k4uLwXxdqAAA.css';
+$css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +34,7 @@ $css_placeholder = 'http://d27tu1smk19hj.cloudfront.net/wp-content/cache/minify/
 						url 		: 'step_one.php', 
 		    			data 		: step_one,
 		    			success 	: function(response) {
-							
+						console.log(response);
 		    			$(".loading_image").hide();
 		    			response =  JSON.parse(response);
 		    			if (response.success) { 
