@@ -22,7 +22,14 @@
 		foreach($do_not_remove_items as $item){
 			unset($unused[$item]);
 		} 
-		$unused = array_values($unused); // 'reindex' array	
+			$unused = array_values($unused); // 'reindex' array	
+	}
+	
+	usort($unused,'compareStrLengthNegatively'); // because we want the longer elements to be removed first
+	
+	
+	function compareStrLengthNegatively($a,$b){
+    return strlen($b)-strlen($a);
 	}
 	
 
@@ -30,15 +37,15 @@
 	
 	foreach($unused as $unuseditem) {
 		$unuseditem = preg_quote($unuseditem, '/');
-		$unuseditem = '(?:(?<=^|\s)(?=\S|$)|(?<=^|\S)(?=\s|$))'.$unuseditem.'(?:(?<=^|\s)(?=\S|$)|(?<=^|\S)(?=\s|$))';
-		$css_string = preg_replace('/'.$unuseditem.'/', "", $css_string);
+		$unuseditem = '(?:(?<=^|\s)(?=\S|$)|(?<=^|\S)(?=\s|$))'.$unuseditem.'(?:(?<=^|\s)(?=\S|$)|(?<=^|\S)(?=\s|$)) *{';
+		$css_string = preg_replace('/'.$unuseditem.'/', "{", $css_string);
 	}
 	
-/*	foreach($unused as $unuseditem) {
+	foreach($unused as $unuseditem) {
 		$unuseditem = preg_quote($unuseditem, '/');
 		$unuseditem = '(?:(?<=^|\s)(?=\S|$)|(?<=^|\S)(?=\s|$))'.$unuseditem.'(?:(?<=^|\s)(?=\S|$)|(?<=^|\S)(?=\s|$)) *,';
-		$css_string = preg_replace('/'.$unuseditem.'/', "", $css_string);
-	}*/
+		$css_string = preg_replace('/'.$unuseditem.'/', ",", $css_string);
+	}
 	
 	$css_string = preg_replace("/(,\s*){2,}/", ",", $css_string); // remove multiple instances of comma
 	$css_string = preg_replace("/}\s*?(,|>)/", "}", $css_string); // remove deinitions with only comma or > left as selector

@@ -113,8 +113,9 @@ $css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 					data 		: {do_not_remove_items:do_not_remove_items},
 					url 		: 'step_three.php', 
 					success 	: function(response) {
-
+						console.log(response);
 						response =  JSON.parse(response); 
+						
 						if (response.success) { 
 							$("#accordion-1").prepend('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
 							$( "#accordion-1" ).accordion("refresh"); 
