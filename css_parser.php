@@ -14,8 +14,7 @@ function parse($css){
         $selector = trim($arr[1][$i]);
         $selectors = explode(',', trim($selector));
         foreach ($selectors as $strSel){
-			array_push($result,trim($strSel));
-			
+			$result[trim($strSel)] = null;
         }
     }
     return $result;

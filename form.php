@@ -20,31 +20,29 @@ $css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 				//form step 1
 		    	$("form[name='step_one']").submit(function(event) { 
 		    		$('.throw_error').empty(); 
-		    		$('.loaded_files').hide();
 		    		var $inputs = $("form[name='step_one']").find("input, textarea");
 					$inputs.prop("disabled", true);
 		    		var step_one = { 
 		    			'urls' 	: $('textarea[name=urls]').val(),
 		    			'css_url' : $('input[name=css_url]').val()
 		    		};
-		    		$(".loading_image").prepend("Fetching URL contents. Please wait ! ");		
+		    		$(".message").html("Fetching URL contents. Please wait ! ");		
 					$(".loading_image").show();
 		    		$.ajax({ 
 		    			type 		: 'POST', 
 						url 		: 'step_one.php', 
 		    			data 		: step_one,
 		    			success 	: function(response) {
-						console.log(response);
-		    			$(".loading_image").hide();
-		    			response =  JSON.parse(response);
-		    			if (response.success) { 
-							$(".loaded_files").show();
-		   				} else {
-							console.log("no success");
-							if (response.errors.urls) { 
-		    					$('.throw_error').fadeIn(1000).html(response.errors.urls); 
-		   					}
-							}
+							$(".loading_image").hide();
+							response =  JSON.parse(response);
+							if (response.success) { 
+								$(".message").html("All files loaded !");		
+								$(".loaded_files").show();
+							} else {
+								if (response.errors.urls) { 
+									$('.throw_error').fadeIn(1000).html(response.errors.urls); 
+									}
+								}
 		    			}
 		    		});
 		    	    event.preventDefault(); 
@@ -53,9 +51,10 @@ $css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 		    
 		    //form step 2
 	    	$("form[name='step_two']").submit(function(event) { 
+		    		$(".message").html("Analyzing CSS. Please wait ! ");	
 		    		$(".loading_image").show();
-		    		$(".loading_image").prepend("Analyzing CSS. Please wait ! ");	
-					$.ajax({ 
+		    		$(".loaded_files").hide();
+		    		$.ajax({ 
 		    			type 		: 'POST', 
 						url 		: 'step_two.php', 
 		    			success 	: function(response) {
@@ -64,6 +63,7 @@ $css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 							response =  JSON.parse(response);
 							if (response.success) { 
 								$(".generate_css_form").show();
+								$(".message").html("");	
 								var num_of_columns=10;
 								var totalnumofitems = response.unused.length + response.used.length;
 								var unused_items = '<h3>Unused :'+ response.unused.length + ' items(' + Math.round( (response.unused.length*100/totalnumofitems), 2)+ '%)</h3><div>' ;
@@ -104,26 +104,33 @@ $css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 		    	
 				//form  step 3
 		    	$("form[name='make_final_css']").submit(function(event) {  
-					$(".generate_css_form").show();
-					var $button = $("form[name='make_final_css']").find("input");
-					$button.prop("disabled", true);
-				var do_not_remove_items = $('input[name="unused"]:checked').map(function() {return this.value;}).get();
-				$.ajax({ 
-					type 		: 'POST', 
-					data 		: {do_not_remove_items:do_not_remove_items},
-					url 		: 'step_three.php', 
-					success 	: function(response) {
-						response =  JSON.parse(response); 
-						if (response.success) { 
-							$("#accordion-1").prepend('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
-							$( "#accordion-1" ).accordion("refresh"); 
-									
+					$(".message").html("Creating modified CSS. Please wait !<br> This may take upto 2 minutes ");	
+					$(".loading_image").show();
+					$(".generate_css_form").hide();
+					//$(".generate_css_form").show();
+					//var $button = $("form[name='make_final_css']").find("input");
+					//$button.prop("disabled", true);
+					var do_not_remove_items = $('input[name="unused"]:checked').map(function() {return this.value;}).get();
+					$.ajax({ 
+						type 		: 'POST', 
+						data 		: {do_not_remove_items:do_not_remove_items},
+						url 		: 'step_three.php', 
+						success 	: function(response) {
+							$(".loading_image").hide();
+							response =  JSON.parse(response); 
+							if (response.success) {
+								$(".message").html("Here's the pruned css file:");	
+								$("#accordion-1").prepend('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
+								$( "#accordion-1" ).accordion("refresh"); 
+										
+								}
+							else {
+								$(".message").hide();
+								$('.throw_error').fadeIn(1000).html("sorry there was a problem, the developers have been notified"); 
+								
+								}
 							}
-						else {
-							$('.throw_error').fadeIn(1000).html("sorry there was a problem, the developers have been notified"); 
-							}
-						}
-					});	
+						});	
 					event.preventDefault(); 
 					});
 					
@@ -166,23 +173,21 @@ $css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 					
 		</form>
 		<span class="throw_error"></span><br>
-		<div class="loading_image"><img src="ajax-loader.gif" /></div>
+		<span class="message"></span>
+		<span class="loading_image"><img src="ajax-loader.gif" /></span><br>
 		<div class="loaded_files">
-			All set to go !<br> Click <i>Go</i> to analyze the CSS fie.
-					<form method="post" name="step_two">
-						<input type="submit" value="Analyse" /><br>
-					</form>
+			All set to go !<br> Click 
+				<form method="post" name="step_two">
+						<input type="submit" value="Go" /><br>
+				</form>
+			to analyze the CSS fie.
 		</div>
-		
-			<div class="generate_css_form"> 
+		<div class="generate_css_form"> 
 				<form method="post" name="make_final_css">
 					<input type="submit" value="Generate CSS" /><br>
 				</form>
-			</div>
-			<div id="accordion-1">
-			
-					
-		   </div>
+		</div>
+		<div id="accordion-1"></div>
 		   
 	</body>
 </html>
