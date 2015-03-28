@@ -11,7 +11,7 @@ $parsed_css = $_SESSION["css"];
 $used = array();
 $unused = array();
 
-foreach(array_keys($parsed_css) as $parsed_cssitem)
+foreach($parsed_css as $parsed_cssitem)
 	(null !==($total_html_content->find(trim(explode(':', $parsed_cssitem, 2)[0]), 0)) ? array_push($used, $parsed_cssitem) : array_push($unused, $parsed_cssitem));
 
 //$_SESSION["used"] = $used;

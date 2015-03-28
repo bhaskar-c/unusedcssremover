@@ -4,7 +4,7 @@
 	header('Content-Type', 'application/json');
 	require_once 'simple_html_dom.php';
     require_once 'css_parser.php';
-	require_once('log.php');
+	//require_once('log.php');
     set_time_limit(90);
     
 	$data = array();
@@ -34,7 +34,6 @@
 	
 
 // Now the css generation stuff
-	
 	foreach($unused as $unuseditem) {
 		$unuseditem = preg_quote($unuseditem, '/');
 		$unuseditem = '(?:(?<=^|\s)(?=\S|$)|(?<=^|\S)(?=\s|$))'.$unuseditem.'(?:(?<=^|\s)(?=\S|$)|(?<=^|\S)(?=\s|$)) *{';
@@ -69,6 +68,11 @@
 	$data['success']= true;
 	echo json_encode($data);
 	
+
+	// remove all session variables
+	session_unset();
+	// destroy the session
+	session_destroy(); 
 	
 	
 
