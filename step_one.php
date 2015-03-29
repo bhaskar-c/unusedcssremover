@@ -5,8 +5,9 @@
     require_once 'css_parser.php';
     require_once('log.php');
 	set_time_limit(90);
+	
 	$MAX_NUM_OF_URLS_ALLOWED = 5;
-
+	$captcha_text = sanitise_input($_POST['captcha_text']);
 	$urls = sanitise_input($_POST['urls']);
 	$css_url = sanitise_input($_POST['css_url']);
 
@@ -15,6 +16,12 @@
     
 	$errors = array(); 
     $step_one_form_return_data = array(); 
+
+	if ( !($captcha_text == $_SESSION["security_code"]) or 
+		(empty($captcha_text) or empty($_SESSION["security_code"])) ) {
+			$errors['urls'] = 'invalid captcha';
+	} 
+
 
     
     //initial validation

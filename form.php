@@ -1,18 +1,19 @@
-<?php $urls_placeholder = 'http://jampotgreens.com/
-http://jampotgreens.com/jamshedpur-schools-teach-entrepreneurship/
-http://jampotgreens.com/about/';
+<?php $urls_placeholder = 'http://home-cure.net/page/5/
+http://home-cure.net/bronchitis/
+http://home-cure.net/ayurvedic-cure-baldness/
+http://home-cure.net/home-cure-whooping-cough/
+http://home-cure.net/best-home-cure-urinary-tract-infection-home-remedies-uti/';
 
-$css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
+$css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 		<meta content="utf-8" http-equiv="encoding">
-		 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-		
 		<script>
 			$(document).ready(function() {
 
@@ -20,11 +21,10 @@ $css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 				//form step 1
 		    	$("form[name='step_one']").submit(function(event) { 
 		    		$('.throw_error').empty(); 
-		    		var $inputs = $("form[name='step_one']").find("input, textarea");
-					$inputs.prop("disabled", true);
 		    		var step_one = { 
 		    			'urls' 	: $('textarea[name=urls]').val(),
-		    			'css_url' : $('input[name=css_url]').val()
+		    			'css_url' : $('input[name=css_url]').val(),
+		    			'captcha_text' : $('input[name=captcha_text]').val()
 		    		};
 		    		$(".message").html("Fetching URL contents. Please wait ! ");		
 					$(".loading_image").show();
@@ -36,6 +36,8 @@ $css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 							$(".loading_image").hide();
 							response =  JSON.parse(response);
 							if (response.success) { 
+								var $inputs = $("form[name='step_one']").find("input, textarea");
+								$inputs.prop("disabled", true);
 								$(".message").html("All files loaded !");		
 								$(".loaded_files").show();
 							} else {
@@ -169,18 +171,18 @@ $css_placeholder = 'http://jampotgreens.com/wp-content/themes/jampot/style.css';
 					<textarea name="urls" id="urls" rows="5" cols="40"><?php echo $urls_placeholder; ?></textarea><br>
 					<label>URL of CSS File</label><br>
 					<input type="text" name="css_url" id="css_url" value="<?php echo $css_placeholder; ?>"><br>
-					<input type="submit" value="Send" /><br>
-					
+					<label>Captcha</label><br><img id="captcha_image" src="create_image.php" /><br>
+					<input maxlength="5" size="5" type="text" name="captcha_text" /><br>
+					<input type="submit" value="Send" />
 		</form>
 		<span class="throw_error"></span><br>
 		<span class="message"></span>
 		<span class="loading_image"><img src="ajax-loader.gif" /></span><br>
 		<div class="loaded_files">
-			All set to go !<br> Click 
+			 Click on go button to to analyze the CSS file<br> 
 				<form method="post" name="step_two">
 						<input type="submit" value="Go" /><br>
 				</form>
-			to analyze the CSS fie.
 		</div>
 		<div class="generate_css_form"> 
 				<form method="post" name="make_final_css">
