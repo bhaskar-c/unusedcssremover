@@ -39,10 +39,13 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 								var $inputs = $("form[name='step_one']").find("input, textarea");
 								$inputs.prop("disabled", true);
 								$(".message").html("All files loaded !");		
+								$("#captcha").hide();
 								$(".loaded_files").show();
+								
 							} else {
-								if (response.errors.urls) { 
-									$('.throw_error').fadeIn(1000).html(response.errors.urls); 
+								if (response.errors.msg) { 
+									$('.throw_error').fadeIn(1000).html(response.errors.msg); 
+									$(".message").html("");
 									}
 								}
 		    			}
@@ -64,12 +67,12 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 							$(".loading_image").hide();
 							response =  JSON.parse(response);
 							if (response.success) { 
-								$(".generate_css_form").show();
-								$(".message").html("");	
 								var num_of_columns=10;
-								var totalnumofitems = response.unused.length + response.used.length;
-								var unused_items = '<h3>Unused :'+ response.unused.length + ' items(' + Math.round( (response.unused.length*100/totalnumofitems), 2)+ '%)</h3><div>' ;
-								unused_items +=  '<span style="color:tomato">These unused  css items will be removed.<br>Select items you do not want removed and then press the "Generate CSS" button</span>';
+								var total_num_of_items = response.unused.length + response.used.length;
+								$(".generate_css_form").show();	
+								$(".message").html('Unused: '+response.unused.length+'items.<br> Used:'+response.used.length+' items <br>' );	
+								var unused_items = '<h3>Unused :'+ response.unused.length + ' items(' + Math.round( (response.unused.length*100/total_num_of_items), 2)+ '%)</h3><div>' ;
+								unused_items +='<span style="color:#FB0404">These unused items will be removed from the modified css file.<br>You can retain any unused css items by click selecting it.<br> Items you select here will not be removed.  <br> Once you have selected items to retain, press the "Generate CSS" button</span>';
 								
 							    unused_items = unused_items+'<table><tr>';
 								var unused_item_counter=1;
@@ -84,7 +87,7 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 								
 								//used items table
 								var used_items =
-								'<h3> Used :'+ response.used.length + ' items(' + Math.round((response.used.length*100/totalnumofitems), 2)+ '%)</h3><div>';
+								'<h3> Used :'+ response.used.length + ' items(' + Math.round((response.used.length*100/total_num_of_items), 2)+ '%)</h3><div>';
 								var used_items= used_items +'<table><tr>';
 								var used_item_counter=1;
 								$.each(response.used, function(index, value) {
@@ -123,6 +126,7 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 							if (response.success) {
 								$(".message").html("Here's the pruned css file:");	
 								$("#accordion-1").prepend('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
+								$( "#accordion-1" ).accordion({active:false,});
 								$( "#accordion-1" ).accordion("refresh"); 
 										
 								}
@@ -161,7 +165,8 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 			.loading_image, .loaded_files, .throw_error, .generate_css_form {display: none; margin: 5px; width:650px;}
 			table, th, td {   border: 1px solid #b5b5b5;} 
 			tr:nth-child(odd){ background-color:#f5f5f5;}
-			.throw_error {color:red;}1
+			.throw_error {color:red;}
+			label {cursor: pointer;}
 			
 		</style>
 	</head>
@@ -171,8 +176,8 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 					<textarea name="urls" id="urls" rows="5" cols="40"><?php echo $urls_placeholder; ?></textarea><br>
 					<label>URL of CSS File</label><br>
 					<input type="text" name="css_url" id="css_url" value="<?php echo $css_placeholder; ?>"><br>
-					<label>Captcha</label><br><img id="captcha_image" src="create_image.php" /><br>
-					<input maxlength="5" size="5" type="text" name="captcha_text" /><br>
+					<span id="captcha"><label>Captcha</label><br><img id="captcha_image" src="create_image.php" /><br>
+					<input maxlength="5" size="5" type="text" name="captcha_text" /></span><br>
 					<input type="submit" value="Send" />
 		</form>
 		<span class="throw_error"></span><br>
