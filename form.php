@@ -17,10 +17,10 @@ $css_placeholder = 'http://example.com/style.css';
 		<script>
 			$(document).ready(function() {
 
-				//enable send only when values filled by used
+				//some prelimnary validations 
 				validate();
 				$('#urls, #css_url, #captcha_text').keyup(validate);
-
+				
 			
 				//form step 1
 		    	$("form[name='step_one']").submit(function(event) { 
@@ -74,7 +74,7 @@ $css_placeholder = 'http://example.com/style.css';
 								var num_of_columns=10;
 								var total_num_of_items = response.unused.length + response.used.length;
 								$(".generate_css_form").show();	
-								$(".message").html('Unused: '+response.unused.length+'items.<br> Used:'+response.used.length+' items <br>' );	
+								$(".message").html('Unused: '+response.unused.length+'items.<br> Used: '+response.used.length+' items. <br>' );	
 								var unused_items = '<h3>Unused :'+ response.unused.length + ' items(' + Math.round( (response.unused.length*100/total_num_of_items), 2)+ '%)</h3><div>' ;
 								unused_items +='<span style="color:#FB0404">These unused items will be removed from the modified css file.<br>You can retain any unused css items by click selecting it.<br> Items you select here will not be removed.  <br> Once you have selected items to retain, press the "Generate CSS" button</span>';
 								
@@ -128,15 +128,15 @@ $css_placeholder = 'http://example.com/style.css';
 							$(".loading_image").hide();
 							response =  JSON.parse(response); 
 							if (response.success) {
-								$(".message").html("Here's the pruned css file:");	
+								$(".message").html('Here\'s the pruned css file. <br>Backup your original css file before replacing it with this file. Things may go wrong. You have been warned !!');	
 								$("#accordion-1").prepend('<h3>Modified CSS</h3><div><pre>'+  response.content  +'</pre></div>');
-								$( "#accordion-1" ).accordion({active:false,});
+								$( "#accordion-1" ).accordion({active:false});
 								$( "#accordion-1" ).accordion("refresh"); 
 										
 								}
 							else {
 								$(".message").hide();
-								$('.throw_error').fadeIn(1000).html("sorry there was a problem, the developers have been notified"); 
+								$('.throw_error').fadeIn(1000).html('sorry an unexpected error occurred ! Please notify the developer'); 
 								
 								}
 							}
@@ -153,7 +153,7 @@ $css_placeholder = 'http://example.com/style.css';
 					$('#css_url').focus(function() {if ($(this).val() == css_placeholder)	$(this).val("");});
 					$('#css_url').blur(function() {if ($(this).val() == "") $(this).val(css_placeholder);	});
 					
-					
+				$( "#faq_accordion" ).accordion({heightStyle: "content", collapsible: true}); 	
 
 	});//matches dom
 	
@@ -231,6 +231,21 @@ $css_placeholder = 'http://example.com/style.css';
 				</form>
 		</div>
 		<div id="accordion-1"></div>
+		<h1>FAQs</h1>
+		<div id="faq_accordion"> 
+			<h3>Wrong CSS Output</h3>
+				<div>The code is currently a beta release. Please report all errors on this Github issues page.<br>
+				Another reason why you should backup your original css before replacing it with the modified css.</div>
+			<h3>Why only 5 urls ?</h3>
+				<div>This restriction is due to my hosting account bandwidth constraint.<br> You can always download the code from github repository and run it on your localhost for unlimited number of urls.</div>
+			<h3>Reporting Errors/ Suggestions/ Feedback</h3>
+				<div>Had problems with your CSS file ? Found issues with the code ?  Report all bugs at github</div>
+			<h3>Contributing</h3>
+				<div>The code is license under MIT License. Please contribute to the development of the code at gihub.</div>
+			
+		</div>
+		
+		
 		   
 	</body>
 </html>
