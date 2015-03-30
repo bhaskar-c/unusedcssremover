@@ -1,10 +1,10 @@
-<?php $urls_placeholder = 'http://home-cure.net/page/5/
-http://home-cure.net/bronchitis/
-http://home-cure.net/ayurvedic-cure-baldness/
-http://home-cure.net/home-cure-whooping-cough/
-http://home-cure.net/best-home-cure-urinary-tract-infection-home-remedies-uti/';
+<?php $urls_placeholder = 'http://example.com
+http://example.com/page/1
+http://example.com/post/1
+http://example.com/contact
+http://example.com/category/1';
 
-$css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
+$css_placeholder = 'http://example.com/style.css';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +16,10 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 		<script>
 			$(document).ready(function() {
+
+				//enable send only when values filled by used
+				validate();
+				$('#urls, #css_url, #captcha_text').keyup(validate);
 
 			
 				//form step 1
@@ -152,6 +156,37 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 					
 
 	});//matches dom
+	
+	function validate(){
+		if ($('#urls').val().length   >   0   &&
+			$('#urls').val().indexOf("example.com") < 0  &&
+			are_all_valid_urls($('#urls').val()) &&
+			$('#css_url').val().length  >   0   &&
+			$('#css_url').val().indexOf("example.com") < 0  &&
+			is_valid_url($('#css_url').val()) &&
+			$('#captcha_text').val().length    >   0) {
+			$(".send_button").prop("disabled", false);
+		}
+		else {
+			$(".send_button").prop("disabled", true);
+		}
+	}
+	
+	function are_all_valid_urls(entered){
+		urls_array = entered.split(/\n/);
+		for(var i in urls_array) {
+			if (!is_valid_url(urls_array[i])){return false;}
+      		}
+		return true;
+	}
+	
+	function is_valid_url(url) {
+		var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+		return regexp.test(url);
+	}
+
+	
+	
 		</script>
 		<noscript>
 			<div style="border: 1px solid purple; padding: 10px">
@@ -162,7 +197,7 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 			table {table-layout:fixed; width:650px; border-collapse: collapse;}
 			 td { white-space: -o-pre-wrap; word-wrap: break-word;  white-space: pre-wrap; white-space: -moz-pre-wrap; 
 				white-space: -pre-wrap; height: auto;    vertical-align: bottom;}
-			.loading_image, .loaded_files, .throw_error, .generate_css_form {display: none; margin: 5px; width:650px;}
+			.loading_image, .loaded_files, .throw_error, .generate_css_form {display: none; margin: 5px 0; width:650px;}
 			table, th, td {   border: 1px solid #b5b5b5;} 
 			tr:nth-child(odd){ background-color:#f5f5f5;}
 			.throw_error {color:red;}
@@ -170,6 +205,7 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 			
 		</style>
 	</head>
+	
 	<body>
 		<form method="post" name="step_one">
 					<label>Enter up to 5 URLs(one per line). </label><br>
@@ -177,14 +213,14 @@ $css_placeholder = 'http://home-cure.net/wp-content/themes/custom/style.css';
 					<label>URL of CSS File</label><br>
 					<input type="text" name="css_url" id="css_url" value="<?php echo $css_placeholder; ?>"><br>
 					<span id="captcha"><label>Captcha</label><br><img id="captcha_image" src="create_image.php" /><br>
-					<input maxlength="5" size="5" type="text" name="captcha_text" /></span><br>
-					<input type="submit" value="Send" />
+					<input maxlength="5" size="5" type="text" id="captcha_text" name="captcha_text" /></span><br>
+					<input class="send_button" type="submit" value="Next" />
 		</form>
 		<span class="throw_error"></span><br>
 		<span class="message"></span>
 		<span class="loading_image"><img src="ajax-loader.gif" /></span><br>
 		<div class="loaded_files">
-			 Click on go button to to analyze the CSS file<br> 
+			 Click on <i>Go</i> button to to analyze the CSS file<br> 
 				<form method="post" name="step_two">
 						<input type="submit" value="Go" /><br>
 				</form>
