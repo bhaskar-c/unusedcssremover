@@ -3,7 +3,7 @@ session_start();
 
 require_once 'simple_html_dom.php';
 require_once 'css_parser.php';
-require_once('log.php');
+//require_once('log.php');
 set_time_limit(90);
 $total_html_content = str_get_html($_SESSION["total_html_content"]);
 $parsed_css = $_SESSION["css"];
@@ -14,9 +14,7 @@ $unused = array();
 foreach(array_keys($parsed_css) as $parsed_cssitem)
 	(null !==($total_html_content->find(trim(explode(':', $parsed_cssitem, 2)[0]), 0)) ? array_push($used, $parsed_cssitem) : array_push($unused, $parsed_cssitem));
 
-//$_SESSION["used"] = $used;
 $_SESSION["unused"] = $unused;
-
 
 // lets do some css processing here to make it fit for use in the next step
 // doing it here to avoid reaching maximum execution time of 30 seconds in the next step

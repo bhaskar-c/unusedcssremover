@@ -57,8 +57,7 @@
 		$parsed_css =  parse($css_string);
 		$_SESSION["css"] = $parsed_css;
 		
-		dlog($parsed_css);	
-		
+			
 		$_SESSION["css_string"] = $css_string;
 }
 
