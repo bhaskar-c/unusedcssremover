@@ -9,7 +9,8 @@ A browser based tool to remove unused items from CSS file.
     *Finds unused CSS selectors
     *Create a new lightweight CSS file 
     *Compare your CSS file against multiple site urls
-    *Allows you to view all unused elements and still retain some of them for future possible use
+    *Allows you to view all unused elements and still 
+    retain some of them for future possible use
     *Supports responsive design rules and new CSS-3 selectors
     *Ignores CSS import commands
 
@@ -21,8 +22,8 @@ A browser based tool to remove unused items from CSS file.
     * I do not take any reposnsibility for broken css rules or ugly looking sites.
     
     *Some CMS like Wordpress detects themes based on top comment in style.css.
-    *The output CSS file from this program will be stripped of all comments. You may want to add back the top level comments if 
-    using CMS like wordpress.
+    *The output CSS file from this program will be stripped of all comments. 
+    *You may want to add back the top level comments to your style.css if using wordpress.
     
 ###Direction for USE
     1) Download the Archive and extract the folder to the root of your localhost or server.
@@ -30,7 +31,8 @@ A browser based tool to remove unused items from CSS file.
     
 ###Changing the Maximum Number of Allowed URLS
     *The current maximum number of simultaneuos URLS allowed is 5.
-    *You can change the maximum number of URLS allowed by tweaking the value of this line of code
+    *You can change the maximum number of URLS allowed by tweaking the
+     value of this line of code:
     `$MAX_NUM_OF_URLS_ALLOWED = 5;`
     in the beginning of the file `step_one.php`
     
