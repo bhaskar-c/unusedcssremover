@@ -38,9 +38,12 @@ A demo is available here :  [unused css remover tool](http://knowpapa.com/unused
     in the beginning of the file `step_one.php`
     
 ###Handling large CSS files or large number of URLs
-    *You can also tweak in the value for invidual script by changing this line of code:
+    *You can also tweak in the value for invidual script by changing 
+    this line of code:
     set_time_limit(90);
     in files step_one.php, step_two.php and step_three.php
 
-    *You may also tweak in the maximum execution time for php scripts in your php.ini file
-    *Normally the default is  30 seconds and this may get exceeded in case of large CSS files.
+    *You may also tweak in the maximum execution time for php scripts in
+     your php.ini file
+    *Normally the default is  30 seconds and this may get exceeded in 
+    case of large CSS files.
