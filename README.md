@@ -3,7 +3,7 @@
 
 
 A browser based tool to remove unused items from CSS file.
-A demo is available here :[unused css remover tool](http://knowpapa.com/unused-css-remover/) 
+A demo is available here :  [unused css remover tool](http://knowpapa.com/unused-css-remover/) 
 
 ###Features
 
@@ -20,7 +20,7 @@ A demo is available here :[unused css remover tool](http://knowpapa.com/unused-c
 ###Warnings:
     * The code is a beta release. There are bugs in the code.
     * Please BACKUP YOUR OLD CSS before replacing it with new CSS. 
-    * I do not take any reposnsibility for broken css rules or ugly looking sites.
+    * I do not take any reponsibility for broken css rules or ugly looking sites.
     
     *Some CMS like Wordpress detects themes based on top comment in style.css.
     *The output CSS file from this program will be stripped of all comments. 
