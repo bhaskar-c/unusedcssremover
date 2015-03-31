@@ -153,8 +153,7 @@ $css_placeholder = 'http://example.com/style.css';
 					$('#css_url').focus(function() {if ($(this).val() == css_placeholder)	$(this).val("");});
 					$('#css_url').blur(function() {if ($(this).val() == "") $(this).val(css_placeholder);	});
 					
-				$( "#faq_accordion" ).accordion({heightStyle: "content", collapsible: true}); 	
-
+				
 	});//matches dom
 	
 	function validate(){
@@ -231,21 +230,19 @@ $css_placeholder = 'http://example.com/style.css';
 				</form>
 		</div>
 		<div id="accordion-1"></div>
-		<h1>FAQs</h1>
-		<div id="faq_accordion"> 
-			<h3>Wrong CSS Output</h3>
-				<div>The code is currently a beta release. Please report all errors on this Github issues page.<br>
-				Another reason why you should backup your original css before replacing it with the modified css.</div>
-			<h3>Why only 5 urls ?</h3>
-				<div>This restriction is due to my hosting account bandwidth constraint.<br> You can always download the code from github repository and run it on your localhost for unlimited number of urls.</div>
-			<h3>Reporting Errors/ Suggestions/ Feedback</h3>
-				<div>Had problems with your CSS file ? Found issues with the code ?  Report all bugs at github</div>
-			<h3>Contributing</h3>
-				<div>The code is license under MIT License. Please contribute to the development of the code at gihub.</div>
+		<h3>Notice/ Warning</h3>
+		<ul>
+			<li>Please BACKUP YOUR OLD CSS before replacing it with new CSS. I do not take any reposnsibility for broken css rules or ugly looking sites.</li>
 			
-		</div>
-		
-		
-		   
+		<li>
+			<strong>Wrong CSS Output:</strong>The code is currently a beta release. Please report all errors on this <a href="https://github.com/quakig/unusedcssremover"> Github</a> issues page. Another reason why you should backup your original css before replacing it with the modified css.</li>
+		<li><strong>Maximum 5 urls ?:</strong>
+		This restriction is due to my hosting account bandwidth constraint. You can always download the code from <a href="https://github.com/quakig/unusedcssremover"> Github</a> repository and run it on your localhost for unlimited number of urls.</li>
+		<li><strong>Reporting Errors/ Suggestions/ Feedback: </strong>
+				Problems with your CSS file ? Found issues with the code ?  Report all bugs at <a href="https://github.com/quakig/unusedcssremover/issues"> here</a></li>
+		<li><strong>Contribute to the code ?</strong> The code is licensed under the MIT License. Please contribute to the development of the code at <a href="https://github.com/quakig/unusedcssremover"> Github</a>.</li>
+			
+		</ul>
+ 
 	</body>
 </html>

@@ -3,6 +3,7 @@
 
 
 A browser based tool to remove unused items from CSS file.
+A demo is available here :[unused css remover tool](http://knowpapa.com/unused-css-remover/) 
 
 ###Features
 

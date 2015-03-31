@@ -1,10 +1,8 @@
 <?php
 
 	session_start();
-	header('Content-Type', 'application/json');
 	require_once 'simple_html_dom.php';
     require_once 'css_parser.php';
-	//require_once('log.php');
     set_time_limit(90);
     
 	$data = array();
