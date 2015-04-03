@@ -47,3 +47,7 @@ A demo is available here :  [unused css remover tool](http://knowpapa.com/unused
      your php.ini file
     *Normally the default is  30 seconds and this may get exceeded in 
     case of large CSS files.
+
+
+###To-Do
+  Ajax/JavaScript added CSS elements not accounted for.
