@@ -62,7 +62,41 @@
 	$css_string = preg_replace('/\s+/', ' ', $css_string); // remove excess white spaces
 	
 	//houston we are ready;
-	$data['content'] = $css_string ; 
+
+	$css = $css_string;
+
+	// remove spaces in the right places
+	$css = str_replace("; ", ";", $css);
+	$css = str_replace("} ", "}", $css);
+	$css = str_replace("{ ", "{", $css);
+
+	// remove spaces before {
+	$css = preg_replace('/(\s+)\{/','{', $css);
+
+	// restoring the structure
+	$css = preg_replace('/[\n\r]{1,}/is',"", $css);
+	$css = preg_replace('/\}/is',"}\n\n", $css);
+	$css = preg_replace('/\}\s+\}/is',"}\n}\n", $css);
+	$css = preg_replace('/\{/is',"{\n", $css);
+	$css = preg_replace('/\;/is',";\n", $css);
+	$css = preg_replace('/\*\//is',"*/\n", $css);
+
+	// put tab after ; and {
+	$css = str_replace(";\n", ";\n	", $css);
+	$css = str_replace("{\n", "{\n	", $css);
+	// removed tab the last }
+	$css = preg_replace('/(\t|\s)}/m',"}", $css);
+
+	// for media 
+	$css = str_replace("}}", "}\n}", $css);
+	$css = str_replace("){\n\t", "){\n", $css);
+
+	// remove duplicate spaces and tabs
+	$css = preg_replace('/ {2,}/', ' ', $css);
+	$css = preg_replace("/\t{2,}/", "\t", $css);
+
+	//houston we are ready;
+	$data['content'] = $css; 
 	$data['success']= true;
 	echo json_encode($data);
 	
